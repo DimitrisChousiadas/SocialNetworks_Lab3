@@ -10,11 +10,14 @@ for population = 10:10:200
        cInd = int16(10*crossover-2);
        for mutation = 0.01:0.01:0.2
            mInd = int16(100*mutation);
-           options = gaoptimset('PopulationSize',population,'CrossoverFraction',crossover);
-           [r,f] = ga(@oneMaxFit,n,[],[],[],[],zeros(n,1),ones(n,1),[],(1:n),options);
-           x(:,pInd,cInd,mInd) = r; 
+           options = gaoptimset('PopulationSize',population,'PopulationType','bitstring',...
+               'CrossoverFraction',crossover,'MutationFcn',{@mutationuniform,mutation});
+           [r,f] = ga(@oneMaxFit,n,[],[],[],[],[],[],[],[],options);
+           x(:,pInd,cInd,mInd) = r;
            fval(pInd,cInd,mInd) = f;
            fprintf('pInd: %d, cInd: %d, mInd: %d\n', pInd,cInd,mInd);
       end
    end
 end
+
+save('results\onemax.mat');
