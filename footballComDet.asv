@@ -33,16 +33,15 @@ end
 %% Genetics
 
 generation = 1;
-while generation <= 30
+while generation < 30
     
-    fprintf('Generation: %d\n', generation);
+    fprintf('Ordering: %d\n', generation);
     
     % proportional selection
     sumCS = 0;
     csCum = zeros(chromosomes,1);
     for j = 1:chromosomes
-        fit = comDetFit(football,population(j,:));
-        sumCS = sumCS + fit;
+        sumCS = sumCS + comDetFit(football,population(j,:));
         csCum(j) = sumCS;
     end
        

@@ -24,9 +24,6 @@ function cs = comDetFit (adj,individual)
         if state(node) == 0
             k = k + 1;
             [state, parent, components] = dfs(s, p, node, adj_comp, comps, k);
-            comps = components;
-            s = state;
-            p = parent;
         end
     end
     
@@ -35,10 +32,11 @@ function cs = comDetFit (adj,individual)
     for comp = 1:k
         I = find(components(comp,:));
         S = adj(I,I);
+        l = size(I,2); 
         uS = sum(sum(S));
-        mS = uS / size(I,2);
-        qS = mS*uS;
-        cs = cs + qS;
+        m = 0;
+        for iter = 1:l
+            m = m + sum(S(iter,:));
     end
     
 end
