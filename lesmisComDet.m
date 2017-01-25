@@ -1,14 +1,14 @@
-% American Football - Community Detection
+% Les Miserables - Community Detection
 
 clc;
 clear;
 PathAdd;
 
-football = importgml('football.gml');
-football = makeUndirected(football);
+lesmis = importgml('lesmis.gml');
+lesmis = makeUndirected(lesmis);
 
 t = 0;
-n = size(football,1);
+n = size(lesmis,1);
 %{
 foo = 1;
 for iter = 1:size(dec2bin(n),2)
@@ -16,8 +16,9 @@ for iter = 1:size(dec2bin(n),2)
 end
 %}
 
-crossoverProb = 0.9;
+crossoverProb = 0.7;
 mutationProb = 0.1;
+elitism = 1;
 
 %% Population Initialization
 
@@ -26,7 +27,7 @@ population = zeros(chromosomes,n);
 
 for i = 1:chromosomes
     for j = 1:n
-        neighbors = find(football(j,:));
+        neighbors = find(lesmis(j,:));
         l = size(neighbors);
         k = randi(l,1);
         population(i,j) = neighbors(k);
@@ -51,7 +52,7 @@ while generation <= 30 && counter < 5
     sumCS = 0;
     csCum = zeros(chromosomes,1);
     for j = 1:chromosomes
-        fit = comDetFit(football,population(j,:));
+        fit = comDetFit(lesmis,population(j,:));
         if fit > maxFit
             maxFit = fit;
             counter = 0;
@@ -92,9 +93,9 @@ while generation <= 30 && counter < 5
     % mutation
     for iter = 1:chromosomes
         for k = 1:n
-            neighbors = find(football(k,:));
+            neighbors = find(lesmis(k,:));
             l = size(neighbors);
-            if l>1 & rand(1) <= mutationProb
+            if rand(1) <= mutationProb & l>1
                 %population(iter,k) = bitxor(population(iter,k),foo);
                 node = neighbors(randi(l,1));
                 while node == population(iter,k)
@@ -109,7 +110,7 @@ end
 
 %% Plot Communities
 
-n = size(football,1);
+n = size(lesmis,1);
     
 adj_comp = zeros(n,n);
 for iter = 1:n
@@ -145,4 +146,4 @@ for iter = 1:k
     end
 end
 
-PlotGraph(football, communities);
+PlotGraph(lesmis, communities);

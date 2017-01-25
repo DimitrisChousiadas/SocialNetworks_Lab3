@@ -1,4 +1,4 @@
-%% Fitness Function - Community Detection
+% b Fitness Function - Community Detection
 
 function cs = comDetFit (adj,individual)
 
