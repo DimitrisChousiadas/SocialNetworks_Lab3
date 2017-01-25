@@ -36,7 +36,12 @@ function cs = comDetFit (adj,individual)
         I = find(components(comp,:));
         S = adj(I,I);
         uS = sum(sum(S));
-        mS = uS / size(I,2);
+        mS = 0;
+        for iter = 1:size(I,2)
+            aiJ = sum(S(iter,:))/size(I,2);
+            mS = mS + aiJ;
+        end
+        mS = mS/size(I,2);
         qS = mS*uS;
         cs = cs + qS;
     end

@@ -38,15 +38,15 @@ end
 
 generation = 1;
 maxFit = 0;
-counter = 0;
+counter = 1;
 newPopulation = zeros(chromosomes,n);
 
 while generation <= 30 && counter < 5
     
+    fprintf('Generation: %d\n', generation);
+    
     generation = generation + 1;
     counter = counter + 1;
-    
-    fprintf('Generation: %d\n', generation);
     
     % proportional selection
     sumCS = 0;
@@ -55,12 +55,13 @@ while generation <= 30 && counter < 5
         fit = comDetFit(lesmis,population(j,:));
         if fit > maxFit
             maxFit = fit;
-            counter = 0;
+            counter = 1;
             bestIndividual = population(j,:);
         end
         sumCS = sumCS + fit;
         csCum(j) = sumCS;
     end
+    fprintf('Max Fit: %d\n', maxFit);
        
     for iter = 1:chromosomes
         
@@ -68,7 +69,7 @@ while generation <= 30 && counter < 5
        k = 1;
        flag = (x < csCum(k)/sumCS);
        
-       while k < chromosomes && flag
+       while (k < chromosomes) && (flag == 0)
            k = k + 1;
            flag = (x < csCum(k)/sumCS);
        end
@@ -94,8 +95,8 @@ while generation <= 30 && counter < 5
     for iter = 1:chromosomes
         for k = 1:n
             neighbors = find(lesmis(k,:));
-            l = size(neighbors);
-            if rand(1) <= mutationProb & l>1
+            l = size(neighbors,2);
+            if (rand(1) <= mutationProb) && (l>1)
                 %population(iter,k) = bitxor(population(iter,k),foo);
                 node = neighbors(randi(l,1));
                 while node == population(iter,k)
@@ -137,7 +138,7 @@ for node = 1:n
     end
 end
 
-communities = zeros(1,n);
+communities = zeros(n,1);
 for iter = 1:k
     for j = 1:n
         if components(iter,j) == 1
