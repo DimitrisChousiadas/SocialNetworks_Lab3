@@ -9,12 +9,6 @@ football = makeUndirected(football);
 
 t = 0;
 n = size(football,1);
-%{
-foo = 1;
-for iter = 1:size(dec2bin(n),2)
-    foo = foo + 2^iter;
-end
-%}
 
 crossoverProb = 0.9;
 mutationProb = 0.1;
@@ -96,7 +90,6 @@ while generation <= 30 && counter < 5
             neighbors = find(football(k,:));
             l = size(neighbors,2);
             if (l>1) && (rand(1) <= mutationProb)
-                %population(iter,k) = bitxor(population(iter,k),foo);
                 node = neighbors(randi(l,1));
                 while node == population(iter,k)
                     node = neighbors(randi(l,1));

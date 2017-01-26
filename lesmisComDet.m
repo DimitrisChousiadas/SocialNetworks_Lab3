@@ -9,12 +9,6 @@ lesmis = makeUndirected(lesmis);
 
 t = 0;
 n = size(lesmis,1);
-%{
-foo = 1;
-for iter = 1:size(dec2bin(n),2)
-    foo = foo + 2^iter;
-end
-%}
 
 crossoverProb = 0.7;
 mutationProb = 0.1;
@@ -97,7 +91,6 @@ while generation <= 30 && counter < 5
             neighbors = find(lesmis(k,:));
             l = size(neighbors,2);
             if (rand(1) <= mutationProb) && (l>1)
-                %population(iter,k) = bitxor(population(iter,k),foo);
                 node = neighbors(randi(l,1));
                 while node == population(iter,k)
                     node = neighbors(randi(l,1));

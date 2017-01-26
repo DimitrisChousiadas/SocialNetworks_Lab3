@@ -3,8 +3,7 @@
 function cs = comDetFit (adj,individual)
 
     n = size(adj,1);
-    %components = zeros(FindComponents(adj,n),n);
-    
+   
     adj_comp = zeros(n,n);
     for iter = 1:n
         i = individual(iter);
