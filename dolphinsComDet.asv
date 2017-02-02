@@ -1,23 +1,24 @@
-% Les Miserables - Community Detection
+% Dolphins - Community Detection
 
 clc;
 clear;
 PathAdd;
 
-lesmis = importgml('lesmis.gml');
-lesmis = makeUndirected(lesmis);
+dolphins = importgmlDolphins('dolphins.gml');
+dolphins = makeUndirected(dolphins);
 
 t = 0;
-n = size(lesmis,1);
+n = size(dolphins,1);
 
-globalMax = 0;
-globalMaxConfig = zeros(3,1);
+crossoverProb = 0.7;
+mutationProb = 0.2;
+elitism = 2;
 
 %% Iterations
 
 for crossoverProb = 0.7:0.1:0.9
     for mutationProb = 0.1:0.1:0.2
-        for elitism = 1:1:3
+        for elitsm = 1:1:3
             
             % Population Initialization
             chromosomes = 300;
@@ -25,7 +26,7 @@ for crossoverProb = 0.7:0.1:0.9
 
             for i = 1:chromosomes
                 for j = 1:n
-                    neighbors = find(lesmis(j,:));
+                    neighbors = find(dolphins(j,:));
                     l = size(neighbors);
                     k = randi(l,1);
                     population(i,j) = neighbors(k);
@@ -52,7 +53,7 @@ for crossoverProb = 0.7:0.1:0.9
                 genMaxInd = zeros(elitism,n);
                 for j = 1:chromosomes
 
-                    fit = comDetFit(lesmis,population(j,:));
+                    fit = comDetFit(dolphins,population(j,:));
 
                     if elitism == 3 && genMax(1) <= fit
                         temp = genMax(2);
@@ -95,13 +96,6 @@ for crossoverProb = 0.7:0.1:0.9
                     csCum(j) = sumCS;
                 end
                 fprintf('Max Fit: %d\n', maxFit);
-                
-                if maxFit > globalMax
-                    globalMax = maxFit;
-                    globalMaxConfig(1) = crossoverProb;
-                    globalMaxConfig(2) = mutationProb;
-                    globalMaxConfig(3) = elitism;
-                end
 
                 for iter = 1:elitism
                     newPopulation(iter,:) = genMaxInd(iter,:);
@@ -137,7 +131,7 @@ for crossoverProb = 0.7:0.1:0.9
                 % mutation
                 for iter = 1:chromosomes
                     for k = 1:n
-                        neighbors = find(lesmis(k,:));
+                        neighbors = find(dolphins(k,:));
                         l = size(neighbors,2);
                         if (rand(1) <= mutationProb) && (l>1)
                             node = neighbors(randi(l,1));
@@ -153,7 +147,7 @@ for crossoverProb = 0.7:0.1:0.9
 
             % Plot Communities
 
-            n = size(lesmis,1);
+            n = size(dolphins,1);
 
             adj_comp = zeros(n,n);
             for iter = 1:n
@@ -189,12 +183,10 @@ for crossoverProb = 0.7:0.1:0.9
                 end
             end
 
-            name = strcat('lesmis_','c',int2str(crossoverProb/0.1),'m',int2str(mutationProb/0.1),'e',int2str(elitism),'.png');
-            PlotGraph(lesmis, communities);
-            saveas(gcf,strcat('results/lesmis/',name));
+            PlotGraph(dolphins, communities);
+            name = 'dolphins_c'+
+            saveas(gcf,'results/dolphins/dolphins_c7m2e2.png');
 
         end
     end
 end
-
-save('results/lesmis.mat');
